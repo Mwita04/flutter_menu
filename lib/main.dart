@@ -1,4 +1,5 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// --https://www.youtube.com/watch?v=ZHRhSFXqHJY&list=WL&index=10-- Link to the Video
 
 import 'package:flutter/material.dart';
 import 'dart:math';
@@ -120,28 +121,57 @@ class _HomePageState extends State<HomePage> {
           TweenAnimationBuilder(
               tween: Tween<double>(begin: 0, end: value),
               duration: Duration(milliseconds: 500),
+              curve: Curves.easeIn,
               builder: (_, double val, __) {
                 return (
                     //Lets create a transform widget
                     Transform(
+                  alignment: Alignment.center,
                   transform: Matrix4.identity()
                     ..setEntry(3, 2, 0.001)
-                    ..setEntry(
-                        0,
-                        3,
-                        200 *
-                            val) // this line will allow us translate the screen
+                    ..setEntry(0, 3, 200 * val)
                     ..rotateY((pi / 6) * val),
                   child: Scaffold(
                     appBar: AppBar(
                       title: Text("3D Drawer Menu"),
                     ),
-                    body: Center(child: Text("Swipe right to open menu 👉")),
+                    body: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Swipe right to open menu 👉"),
+                          ElevatedButton(
+                              onPressed: () {}, child: Text("Press Me"))
+                        ],
+                      ),
+                    ),
                   ),
                 ));
               }),
 
           //Gesture detector that will allow us to open the drawer
+          GestureDetector(onHorizontalDragUpdate: (e) {
+            if (e.delta.dx > 0) {
+              setState(() {
+                value = 1;
+              });
+            } else {
+              setState(() {
+                value = 0;
+              });
+            }
+          }
+
+              // On tap can be implemented below but is not that appealing visually
+              /*/ onTap: () {
+              setState(() {
+                value == 0
+                    ? value = 1
+                    : value =
+                        0; //if the value = 0 then when we tap it becomes 1 else it will become 0
+              });
+            },*/
+              )
         ],
       ),
     );
